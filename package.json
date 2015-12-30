@@ -1,0 +1,53 @@
+{
+  "name": "gulp-files-sync",
+  "description": "Synchronizing Bower dependencies, with the possibility of compiling a list",
+  "version": "0.2.0",
+  "license": "MIT",
+  "author": {
+    "name": "Denis Malinochkin",
+    "url": "canonium.com"
+  },
+  "repository": "mrmlnc/gulp-files-sync",
+  "engines": {
+    "node": ">= 0.10.0"
+  },
+  "dependencies": {
+    "array-find-index": "^1.0.1",
+    "fs-extra": "^0.26.3",
+    "globby": "^4.0.0",
+    "gulp-util": "^3.0.7",
+    "has-glob": "^0.1.1",
+    "object-assign": "^4.0.1",
+    "slash": "^1.0.0",
+    "through2": "^2.0.0"
+  },
+  "devDependencies": {
+    "del-cli": "^0.1.2",
+    "mocha": "^2.3.4",
+    "xo": "^0.10.1"
+  },
+  "scripts": {
+    "test": "xo && de .tmp && mocha"
+  },
+  "xo": {
+    "space": 2,
+    "rules": {
+      "object-curly-spacing": [
+        2,
+        "always"
+      ],
+      "space-before-function-paren": [
+        2,
+        "never"
+      ],
+      "arrow-parens": [
+        2,
+        "always"
+      ]
+    },
+    "envs": [
+      "node",
+      "mocha"
+    ]
+  }
+}
