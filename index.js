@@ -25,7 +25,7 @@ var plugin = function(src, dest, options) {
     cb();
   }, function(cb) {
     if (!src || !dest) {
-      cb(new gutil.PluginError('gulp-dirsync', 'Give the source directory and target directory'));
+      cb(new gutil.PluginError('gulp-files-sync', 'Give the source directory and target directory'));
       return;
     }
 
