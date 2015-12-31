@@ -49,7 +49,7 @@ var plugin = function(src, dest, options) {
           }
 
           var baseDest = path.join(dest, baseSrc);
-          sync.sync(filepath, baseDest, options, stat);
+          sync.create(filepath, baseDest, options, stat);
         });
     }
 
