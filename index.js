@@ -70,7 +70,14 @@ var plugin = function(src, dest, options) {
     });
 
     // Displays information about changes
-    sync.printSummary(options, stat);
+    if (options.printSummary) {
+      if (typeof options.printSummary === 'function') {
+        options.printSummary(stat);
+        return;
+      }
+
+      utils.printSummary(stat);
+    }
 
     cb();
   });
