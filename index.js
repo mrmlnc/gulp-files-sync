@@ -1,85 +1,137 @@
 'use strict';
 
+// Node.js
 var path = require('path');
-var gutil = require('gulp-util');
+var fs = require('fs');
+// Gulp
 var through = require('through2');
+var gutil = require('gulp-util');
+var PluginError = gutil.PluginError;
+var log = gutil.log;
+var chalk = gutil.colors;
+// Module
+var Promise = require('promise');
+var statP = Promise.denodeify(fs.stat);
+var rimrafP = Promise.denodeify(require('rimraf'));
 var objectAssign = require('object-assign');
 var globby = require('globby');
-var hasGlob = require('has-glob');
+var globParent = require('glob-parent');
+var cpf = require('cp-file');
+var arrayDiffer = require('array-differ');
+// Utilites for files
+var files = require('./lib/files');
 
-var utils = require('./lib/utils');
-var sync = require('./lib/sync');
+var PLUGIN_NAME = 'gulp-files-sync';
 
 var plugin = function(src, dest, options) {
-  dest = utils.lastSlash(dest);
-  options = objectAssign({
+  var opts = objectAssign({
     cwd: process.cwd(),
     updateAndDelete: true,
     verbose: false,
     ignoreInDest: false
   }, options);
-  var stat = { created: 0, removed: 0, updated: 0, passed: 0 };
 
   return through.obj(function(file, encoding, cb) {
     this.push(file);
     cb();
   }, function(cb) {
+    var _that = this;
     if (!src || !dest) {
-      cb(new gutil.PluginError('gulp-files-sync', 'Give the source directory and target directory'));
+      cb(new PluginError(PLUGIN_NAME, 'Give the source directory and target directory'));
       return;
     }
 
-    // Copying and updating files
-    var arrayOfSrcFiles = globby.sync(src, options);
-    if (arrayOfSrcFiles.length) {
-      // If `src` is a Glob, then delete the directory from array
-      if (hasGlob(src)) {
-        arrayOfSrcFiles = arrayOfSrcFiles
-          .filter(function(filepath) {
-            return !utils.isDirectory(filepath);
+    // If `verbose` mode is enabled
+    log = (opts.verbose) ? log : function() {};
+
+    // Remove latest slash for base path
+    if (opts.base && opts.base.slice(-1) === '/') {
+      opts.base = opts.base.slice(0, -1);
+    }
+
+    // If destination directory not exists create it
+    if (!files.existsStatSync(dest)) {
+      require('mkdirp').sync(dest);
+      opts.updateAndDelete = false;
+    }
+
+    // Settings for globby
+    var globPromises = [
+      globby(src, { dot: true, nosort: true }),
+      globby(path.join(dest, '**'), {
+        dot: true,
+        nosort: true,
+        ignore: opts.ignoreInDest
+      })
+    ];
+
+    Promise.all(globPromises)
+      .then(function(results) {
+        // Deleting files
+        if (opts.updateAndDelete) {
+          // Create a full list of the basic directories
+          var basePaths = [''];
+          src.forEach(function(srcGlob) {
+            var baseDir = files.getPathsTree(globParent(srcGlob));
+            basePaths = basePaths.concat(baseDir);
           });
-      }
 
-      // Synchronization of files in directories
-      arrayOfSrcFiles
-        .forEach(function(filepath) {
-          var baseSrc = filepath;
-          if (options.base) {
-            baseSrc = path.relative(options.base, filepath);
-          }
+          // Compute path to source directory for each file
+          results[1] = results[1].map(function(destPath) {
+            return files.fromDestToSrcPath(destPath, dest, opts);
+          });
 
-          var baseDest = path.join(dest, baseSrc);
-          sync.create(filepath, baseDest, options, stat);
+          // Search unique files to the destination directory
+          // To files in the source directory are added paths to basic directories
+          results[1] = arrayDiffer(results[1], results[0].concat(basePaths));
+
+          // Creating promises to delete files
+          results[1] = results[1].map(function(destPath) {
+            var fullpath = files.fromSrcToDestPath(destPath, dest, opts);
+            return rimrafP(fullpath, { glob: false })
+              .then(log(chalk.red('Removing: ') + fullpath));
+          });
+        }
+
+        // Copying files
+        results[0] = results[0].map(function(srcPath) {
+          var to = files.fromSrcToDestPath(srcPath, dest, opts);
+          var statSrc = statP(srcPath);
+          var statDest = statP(to).catch(function() {});
+          return Promise.all([statSrc, statDest]).then(function(stats) {
+            // Plugin work with only files
+            if (stats[0].isDirectory()) {
+              return false;
+            }
+
+            // Update file?
+            if (opts.updateAndDelete && stats[1] && (stats[0].ctime.getTime() <= stats[1].ctime.getTime())) {
+              return false;
+            }
+
+            return cpf(srcPath, to)
+              // Display log messages when copying files
+              .then(log(chalk.green('Copying: ') + srcPath + chalk.cyan(' -> ') + to))
+              .catch(function(err) {
+                cb(new PluginError(PLUGIN_NAME, 'Cannot copy from `' + srcPath + '` to `' + to + '`: ' + err.message));
+                return;
+              });
+          });
         });
-    }
 
-    // If there is a need to ignore files in the destination directory
-    if (options.ignoreInDest) {
-      options.ignoreInDest = globby.sync(options.ignoreInDest, {
-        cwd: path.join(process.cwd(), dest)
-      });
-    }
-
-    // Delete unnecessary files from the destination directory
-    if (!Array.isArray(src)) {
-      src = src.split();
-    }
-
-    src.forEach(function(filepath) {
-      sync.remove(filepath, dest, options, stat, dest);
-    });
-
-    // Displays information about changes
-    if (options.printSummary) {
-      if (typeof options.printSummary === 'function') {
-        options.printSummary(stat);
+        // Flatten nested array.
+        return Promise.all(results.reduce(function(a, b) {
+          return a.concat(b);
+        }));
+      })
+      .then(function() {
+        _that.resume();
+        cb();
+      })
+      .catch(function(err) {
+        cb(new PluginError(PLUGIN_NAME, err));
         return;
-      }
-
-      utils.printSummary(stat);
-    }
-
-    cb();
+      });
   });
 };
 
