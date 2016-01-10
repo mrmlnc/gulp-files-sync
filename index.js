@@ -52,7 +52,6 @@ var plugin = function(src, dest, options) {
     // If destination directory not exists create it
     if (!files.existsStatSync(dest)) {
       require('mkdirp').sync(dest);
-      opts.updateAndDelete = false;
     }
 
     // Settings for globby
@@ -99,13 +98,9 @@ var plugin = function(src, dest, options) {
           var statSrc = statP(srcPath);
           var statDest = statP(to).catch(function() {});
           return Promise.all([statSrc, statDest]).then(function(stats) {
-            // Plugin work with only files
-            if (stats[0].isDirectory()) {
-              return false;
-            }
-
             // Update file?
-            if (opts.updateAndDelete && stats[1] && (stats[0].ctime.getTime() <= stats[1].ctime.getTime())) {
+            if (!opts.updateAndDelete || stats[0].isDirectory() ||
+              stats[1] && (stats[0].ctime.getTime() <= stats[1].ctime.getTime())) {
               return false;
             }
 
