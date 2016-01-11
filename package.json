@@ -1,6 +1,6 @@
 {
   "name": "gulp-files-sync",
-  "description": "Synchronizing Bower dependencies, with the possibility of compiling a list",
+  "description": "A Gulp plugin providing one-way synchronization of directories with glob",
   "version": "0.3.0",
   "license": "MIT",
   "author": {
