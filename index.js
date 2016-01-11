@@ -71,7 +71,7 @@ var plugin = function(src, dest, options) {
           // Create a full list of the basic directories
           var basePaths = [''];
           src.forEach(function(srcGlob) {
-            var baseDir = files.getPathsTree(globParent(srcGlob));
+            var baseDir = files.expandDirTree(globParent(srcGlob));
             basePaths = basePaths.concat(baseDir);
           });
 
