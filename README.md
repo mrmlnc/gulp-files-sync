@@ -81,7 +81,7 @@ Plugin settings.
 
 **Files**: [AngularJS](https://github.com/angular/angular.js) installed from Bower (1462 files, 19368Кб)
 
-**Note**: `UpdateAndDelete` option is enabled in the Grunt-sync
+**Note**: `UpdateAndDelete` option is enabled in the grunt-sync
 
 | Description of tests                              | gulp-files-sync | gulp-directory-sync | grunt-sync |
 |---------------------------------------------------|-----------------|---------------------|------------|
