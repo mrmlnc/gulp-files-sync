@@ -100,7 +100,7 @@ var plugin = function(src, dest, options) {
           return Promise.all([statSrc, statDest]).then(function(stats) {
             // Update file?
             if (!opts.updateAndDelete || stats[0].isDirectory() ||
-              stats[1] && (stats[0].ctime.getTime() <= stats[1].ctime.getTime())) {
+              stats[1] && files.compareTime(stats[0], stats[1])) {
               return false;
             }
 
