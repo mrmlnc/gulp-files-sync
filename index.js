@@ -37,7 +37,7 @@ var plugin = function(src, dest, options) {
   }, function(cb) {
     var _that = this;
     if (!src || !dest) {
-      cb(new PluginError(PLUGIN_NAME, 'Give the source directory and target directory'));
+      cb(new PluginError(PLUGIN_NAME, 'Give the source directory and destination directory'));
       return;
     }
 
