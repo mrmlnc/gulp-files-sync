@@ -88,7 +88,11 @@ var plugin = function(src, dest, options) {
           results[1] = results[1].map(function(destPath) {
             var fullpath = files.fromSrcToDestPath(destPath, dest, opts);
             return rimrafP(fullpath, { glob: false })
-              .then(log(chalk.red('Removing: ') + fullpath));
+              .then(log(chalk.red('Removing: ') + fullpath))
+              .catch(function(err) {
+                cb(new PluginError(PLUGIN_NAME, 'Cannot remove `' + fullpath + '`: ' + err.code));
+                return;
+              });
           });
         }
 
