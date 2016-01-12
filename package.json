@@ -28,7 +28,7 @@
     "xo": "^0.10.1"
   },
   "scripts": {
-    "test": "rimraf .tmp && mocha --timeout=25000"
+    "test": "rimraf .tmp && xo && mocha --timeout=25000"
   },
   "xo": {
     "space": 2,

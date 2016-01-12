@@ -102,7 +102,6 @@ var plugin = function(src, dest, options) {
           var statDest = statP(to).catch(function() {});
           return Promise.all([statSrc, statDest]).then(function(stats) {
             // Update file?
-
             if ((typeof stats[1] !== 'undefined' && !opts.updateAndDelete) ||
               stats[0].isDirectory() || stats[1] && files.compareTime(stats[0], stats[1])) {
               return false;
