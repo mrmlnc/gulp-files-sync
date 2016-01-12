@@ -24,7 +24,6 @@ var PLUGIN_NAME = 'gulp-files-sync';
 
 var plugin = function(src, dest, options) {
   var opts = objectAssign({
-    cwd: process.cwd(),
     updateAndDelete: true,
     verbose: false,
     ignoreInDest: false
@@ -56,7 +55,8 @@ var plugin = function(src, dest, options) {
     // Settings for globby
     var globPromises = [
       globby(src, { dot: true, nosort: true }),
-      globby(path.join(dest, '**'), {
+      globby('**', {
+        cwd: dest,
         dot: true,
         nosort: true,
         ignore: opts.ignoreInDest
