@@ -15,7 +15,7 @@ $ npm install -S gulp-files-sync
 
 ## Why?
 
-  * Fast by using streams and Promises. Used [cp-file](https://github.com/sindresorhus/cp-file)
+  * Fast by using streams and Promises. Used [cp-file](https://github.com/sindresorhus/cp-file) and [rimraf](https://github.com/isaacs/rimraf).
   * User-friendly by accepting globs.
 
 ## Usage
