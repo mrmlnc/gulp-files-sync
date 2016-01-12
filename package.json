@@ -30,6 +30,10 @@
   "scripts": {
     "test": "rimraf .tmp && xo && mocha --timeout=25000"
   },
+  "files": [
+    "lib",
+    "index.js"
+  ],
   "xo": {
     "space": 2,
     "rules": {
