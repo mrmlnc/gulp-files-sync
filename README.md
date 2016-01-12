@@ -25,12 +25,11 @@ var gulp = require('gulp');
 var fsync = require('gulp-files-sync');
 
 gulp.task('sync', function() {
-  gulp.src()
-  .pipe(fsync([
-    'src/*.html',
-    'src/scripts/**/*.js',
-    '!src/scripts/vendor/**'
-    ], 'dest'));
+  fsync(['src/**', '!src/folder/**'], 'dest').end();
+
+  // Or with pipeline
+  gulp.src('')
+    .pipe(fsync(['src/**', '!src/folder/**'], 'dest'));
 });
 ```
 
@@ -82,18 +81,18 @@ Plugin settings.
   * Intel Core i7-3610QM
   * RAM 8GB
   * SSD (555MB/S, 530MB/S)
-  * Node.js 4.2.4
+  * Node.js v4.2.4
 
 **Files**: [AngularJS](https://github.com/angular/angular.js) installed from Bower (1462 files, 19368Кб)
 
-**Note**: `UpdateAndDelete` option is enabled in the grunt-sync
+**Note**: `UpdateAndDelete` option is enabled in the grunt-sync, because other plugins have this option initially.
 
 | Description of tests                              | gulp-files-sync | gulp-directory-sync | grunt-sync |
 |---------------------------------------------------|-----------------|---------------------|------------|
 | First run                                         | 2,4s            | 4,5s                | 5,8s       |
-| Re-run                                            | 0,6s            | 0,8                 | 0,7s       |
+| Re-run                                            | 0,6s            | 0,8s                | 0,7s       |
 | Changed single file                               | 0,6s            | 0,8s                | 0,7s       |
-| Delete files from destination directories and run | 2,2s            | 4,5s                | 6,7s       |
+| Delete files from destination directories and run | 2,3s            | 4,5s                | 5,7s       |
 | Delete files from the source directory            | 0,5s            | 0,5s                | 0,5s       |
 
 ## License
