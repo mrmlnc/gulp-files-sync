@@ -7,7 +7,6 @@ var fs = require('fs');
 var through = require('through2');
 var gutil = require('gulp-util');
 var PluginError = gutil.PluginError;
-var log = gutil.log;
 var chalk = gutil.colors;
 // Module
 var Promise = require('promise');
@@ -42,7 +41,7 @@ var plugin = function(src, dest, options) {
     }
 
     // If `verbose` mode is enabled
-    log = (opts.verbose) ? log : function() {};
+    var log = (opts.verbose) ? gutil.log : function() {};
 
     // Remove latest slash for base path
     if (opts.base && opts.base.slice(-1) === '/') {
