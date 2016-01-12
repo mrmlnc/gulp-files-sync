@@ -2,6 +2,11 @@
 
 > A [Gulp plugin](http://gulpjs.com/) providing one-way synchronization of directories with [glob](https://github.com/isaacs/node-glob).
 
+[![Travis](https://img.shields.io/travis/mrmlnc/gulp-files-sync.svg?style=flat-square)](https://travis-ci.org/mrmlnc/gulp-files-sync)
+[![NPM version](https://img.shields.io/npm/v/gulp-files-sync.svg?style=flat-square)](https://www.npmjs.com/package/gulp-files-sync)
+[![devDependency Status](https://img.shields.io/david/mrmlnc/gulp-files-sync.svg?style=flat-square)](https://david-dm.org/mrmlnc/gulp-files-sync#info=dependencies)
+[![devDependency Status](https://img.shields.io/david/dev/mrmlnc/gulp-files-sync.svg?style=flat-square)](https://david-dm.org/mrmlnc/gulp-files-sync#info=devDependencies)
+
 ## Install
 
 ```
