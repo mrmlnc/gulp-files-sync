@@ -63,8 +63,6 @@ Plugin settings.
 {
   // Display log messages when copying and removing files
   verbose: false,
-  // Working directory to find source files. Default: `process.cwd()`
-  cwd: process.cwd(),
   // The base path to be removed from the path. Default: none
   base: 'base_path'
   // Remove all files from dest that are not found in src. Default: false
