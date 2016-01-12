@@ -93,6 +93,27 @@ Plugin settings.
 | Delete files from destination directories and run | 2,3s            | 4,5s                | 5,7s       |
 | Delete files from the source directory            | 0,5s            | 0,5s                | 0,5s       |
 
+## How to work with Grunt?
+
+Just use a custom task:
+
+```js
+var fsync = require('gulp-files-sync');
+
+module.exports = function(grunt) {
+  // Default task(s).
+  grunt.registerTask('default', function() {
+    var done = this.async();
+    fsync(['node_modules/grunt/**'], 'dest')
+      .on('end', function() {
+        done();
+      })
+      .end();
+  });
+
+};
+```
+
 ## License
 
 MIT.
