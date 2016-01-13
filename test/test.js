@@ -133,6 +133,22 @@ describe('Updating files', function() {
       .end();
   });
 
+  it('Update the contents of a file', function(done) {
+    copyRecursiveSync('test/fixtures', '.tmp/fixtures_backup');
+    dirSync(['test/fixtures/**'], '.tmp/update_content', { base: 'test/fixtures' })
+      .on('end', function() {
+        fs.writeFileSync('.tmp/fixtures_backup/folder-2/test.txt', 'test');
+        dirSync(['.tmp/fixtures_backup/**'], '.tmp/update_content', { base: '.tmp/fixtures_backup' })
+          .on('end', function() {
+            var data = fs.readFileSync('.tmp/update_content/folder-2/test.txt', 'utf-8');
+            assert.equal(data, 'test');
+            done();
+          })
+          .end();
+      })
+      .end();
+  });
+
   it('No update and delete files from dest (updateAndDelete)', function(done) {
     createFiles('.tmp/update_nodelete/test/fixtures', 3);
     dirSync(['test/fixtures/**'], '.tmp/update_nodelete', { updateAndDelete: false })
