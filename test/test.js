@@ -47,7 +47,7 @@ var copyRecursiveSync = function(src, dest) {
       copyRecursiveSync(path.join(src, childItemName), path.join(dest, childItemName));
     });
   } else {
-    fs.linkSync(src, dest);
+    fs.writeFileSync(dest, fs.readFileSync(src));
   }
 };
 
