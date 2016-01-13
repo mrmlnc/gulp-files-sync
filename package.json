@@ -34,6 +34,14 @@
     "lib",
     "index.js"
   ],
+  "keywords": [
+    "gulpplugin",
+    "directory",
+    "dir",
+    "files",
+    "sync",
+    "copy"
+  ],
   "xo": {
     "space": 2,
     "rules": {
