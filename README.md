@@ -115,6 +115,11 @@ module.exports = function(grunt) {
 };
 ```
 
+## Changelog
+
+  * **v0.3.1** (2015.01.13) — Update conditions the update files.
+  * **v0.3.0** (2015.01.12) — Initialization().
+
 ## License
 
 MIT.
