@@ -4,6 +4,7 @@ var path = require('path');
 var fs = require('fs');
 var assert = require('assert');
 var gutil = require('gulp-util');
+var mkdir = require('mkdirp');
 var dirSync = require('..');
 
 // Recursively read a directory
@@ -28,7 +29,7 @@ var recurseReadDir = function(root, files, prefix) {
 
 // Creating test files
 var createFiles = function(filepath, count) {
-  require('mkdirp').sync(filepath);
+  mkdir.sync(filepath);
   for (var i = 0; i < count; i++) {
     var testFile = path.join(filepath, 'test-' + i + '.txt');
     fs.writeFileSync(testFile, 'test');
@@ -41,7 +42,7 @@ var copyRecursiveSync = function(src, dest) {
   var stats = exists && fs.statSync(src);
   var isDirectory = exists && stats.isDirectory();
   if (exists && isDirectory) {
-    require('mkdirp').sync(dest);
+    mkdir.sync(dest);
     fs.readdirSync(src).forEach(function(childItemName) {
       copyRecursiveSync(path.join(src, childItemName), path.join(dest, childItemName));
     });
