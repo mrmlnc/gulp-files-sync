@@ -82,7 +82,7 @@ Plugin settings.
   * Windows 10
   * Node.js v4.2.4
 
-**Files**: [AngularJS](https://github.com/angular/angular.js) installed from Bower (1462 files, 19368Кб)
+**Files**: [AngularJS](https://github.com/angular/angular.js) from master branch (1462 files, 19368Кб)
 
 **Note**: `UpdateAndDelete` option is enabled in the grunt-sync, because other plugins have this option initially.
 
