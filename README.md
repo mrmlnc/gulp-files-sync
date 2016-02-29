@@ -1,3 +1,10 @@
+# Deprecation warning
+
+This package has been deprecated. Please use [syncy](https://github.com/mrmlnc/syncy) instead.
+
+**The reason:** This package works not only with Gulp.
+
+
 # gulp-files-sync
 
 > A [Gulp plugin](http://gulpjs.com/) providing one-way synchronization of directories with [glob](https://github.com/isaacs/node-glob).
