@@ -1,5 +1,7 @@
 # Deprecation warning
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/mrmlnc/gulp-files-sync.svg)](https://greenkeeper.io/)
+
 This package has been deprecated. Please use [syncy](https://github.com/mrmlnc/syncy) instead.
 
 **The reason:** This package works not only with Gulp.
